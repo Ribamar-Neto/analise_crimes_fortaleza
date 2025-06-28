@@ -1,0 +1,16 @@
+[project]
+name = "estatistica-aplicada"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "folium>=0.19.6",
+    "geopandas>=1.0.1",
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.10.3",
+    "pandas>=2.2.3",
+    "plotly>=6.2.0",
+    "python-multipart>=0.0.20",
+    "statsmodels>=0.14.4",
+]
