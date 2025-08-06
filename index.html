@@ -230,11 +230,11 @@
                         <div class="btn-group">
                             <button class="btn btn-sm btn-light"><i class="bi bi-zoom-in"></i></button>
                             <button class="btn btn-sm btn-light"><i class="bi bi-zoom-out"></i></button>
-                            <button class="btn btn-sm btn-light"><i class="bi bi-fullscreen"></i></button>
+                            <button class="btn btn-sm btn-light" onclick="toggleFullscreen()"><i class="bi bi-fullscreen"></i></button>
                         </div>
                     </div>
                     <div class="map-container">
-                        <iframe id="mapFrame" class="map-iframe" src="mapa_base_interativo.html" title="Mapa de Fortaleza"></iframe>
+                        <iframe id="mapFrame" class="map-iframe" src="mapas/mapa_base_interativo.html" title="Mapa de Fortaleza"></iframe>
                     </div>
                 </div>
             </div>
@@ -389,19 +389,61 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Mapa atual sendo visualizado
+        let currentMap = {
+            file: 'mapas/mapa_base_interativo.html',
+            name: 'Mapa base Interativo'
+        };
+        
+        // Função para alterar o mapa exibido
         function changeMap(mapFile, mapName) {
-            document.getElementById('mapFrame').src = mapFile;
+            // Adiciona o caminho da pasta 'mapas/'
+            const fullPath = `mapas/${mapFile}`;
+            document.getElementById('mapFrame').src = fullPath;
             document.getElementById('mapSelector').innerHTML = mapName;
             
             // Atualiza o cabeçalho do mapa
             document.querySelector('.card-header i').nextSibling.textContent = ' ' + mapName;
+            
+            // Atualiza o mapa atual
+            currentMap = {
+                file: fullPath,
+                name: mapName
+            };
         }
         
+        // Função para alternar tela cheia
+        function toggleFullscreen() {
+            const iframe = document.getElementById('mapFrame');
+            
+            if (!document.fullscreenElement) {
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                } else if (iframe.mozRequestFullScreen) { // Firefox
+                    iframe.mozRequestFullScreen();
+                } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari
+                    iframe.webkitRequestFullscreen();
+                } else if (iframe.msRequestFullscreen) { // IE/Edge
+                    iframe.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        // Função para baixar o mapa atual
         function downloadMap() {
-            const currentMap = document.getElementById('mapFrame').src;
             const link = document.createElement('a');
-            link.href = currentMap;
-            link.download = currentMap.substring(currentMap.lastIndexOf('/') + 1);
+            link.href = currentMap.file;
+            link.download = currentMap.file.split('/').pop(); // Obtém apenas o nome do arquivo
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

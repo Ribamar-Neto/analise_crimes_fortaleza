@@ -1,19 +1,27 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "mapas/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/mapas/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ]
+    "version": 2,
+    "builds": [
+        {
+            "src": "index.html",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "mapas/*.html",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/mapas/(?<mapa>[^/]+)",
+            "dest": "/mapas/$mapa.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/$1.html"
+        }
+    ]
 }
